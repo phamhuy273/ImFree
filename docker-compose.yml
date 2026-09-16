@@ -1,6 +1,5 @@
-version: '3.8'
-
 services:
+  # 1. Cơ sở dữ liệu PostgreSQL
   postgres:
     image: postgres:16-alpine
     container_name: imfree_postgres
@@ -10,9 +9,20 @@ services:
       POSTGRES_PASSWORD: rootpassword
       POSTGRES_DB: imfree_db
     ports:
-      - '5432:5432'
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  # 2. Redis Caching & Realtime
+  redis:
+    image: redis:7-alpine
+    container_name: imfree_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
 volumes:
   postgres_data:
+  redis_data:

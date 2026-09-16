@@ -7,7 +7,7 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
   public client = db;
 
   async onModuleInit() {
-    // Chỉ kiểm tra thông luồng kết nối, chưa truy vấn bảng nào
+
     this.logger.log('✅ PostgreSQL Database connection initialized successfully!');
   }
 
