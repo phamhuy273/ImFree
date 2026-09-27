@@ -1,13 +1,15 @@
 // use prisma-next
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String?
-  name      String?
-  posts     Post[]
-  createdAt TimestamptzString @default(now())
-  updatedAt temporal.updatedAtString()
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  password_hash String
+  full_name     String
+  phone_number  String
+  avatar_url    String?
+  role          String    @default("STUDENT")
+  createdAt     TimestamptzString @default(now())
+  updatedAt     temporal.updatedAtString()
 }
 
 model Post {
