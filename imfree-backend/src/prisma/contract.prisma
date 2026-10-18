@@ -1,23 +1,45 @@
 // use prisma-next
 
 model User {
-  id            Int       @id @default(autoincrement())
-  email         String    @unique
+  id            Int               @id @default(autoincrement())
+  email         String            @unique
   password_hash String
   full_name     String
   phone_number  String
   avatar_url    String?
-  role          String    @default("STUDENT")
+  role          String            @default("STUDENT")
+  listings      Listing[]
   createdAt     TimestamptzString @default(now())
   updatedAt     temporal.updatedAtString()
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+model Category {
+  id        Int               @id @default(autoincrement())
+  name      String            @unique
+  slug      String            @unique
+  icon_url  String?
+  listings  Listing[]
   createdAt TimestamptzString @default(now())
   updatedAt temporal.updatedAtString()
+}
+
+model Listing {
+  id             Int               @id @default(autoincrement())
+  title          String
+  description    String
+  price_per_day  Float             @default(0)
+  deposit_amount Float             @default(0)
+  images         String[]
+  campus_zone    String            @default("UIT_CAMPUS")
+  location_note  String?
+  status         String            @default("AVAILABLE")
+  
+  provider       User              @relation(fields: [providerId], references: [id])
+  providerId     Int
+  
+  category       Category          @relation(fields: [categoryId], references: [id])
+  categoryId     Int
+  
+  createdAt      TimestamptzString @default(now())
+  updatedAt      temporal.updatedAtString()
 }

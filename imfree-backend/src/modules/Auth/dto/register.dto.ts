@@ -9,14 +9,14 @@ import {
 } from 'class-validator';
 
 export class RegisterDto {
-  @ApiProperty({ example: 'Phạm Huy', description: 'Họ và tên sinh viên' })
+  @ApiProperty({ example: 'Phạm Huy', description: 'Họ và tên sinh viên UIT' })
   @IsString()
   @IsNotEmpty({ message: 'Họ và tên không được để trống' })
   full_name: string;
 
-  @ApiProperty({ example: 'sinhvien@uit.edu.vn', description: 'Email trường cấp (.edu.vn)' })
+  @ApiProperty({ example: '21520000@uit.edu.vn', description: 'Email trường UIT (@uit.edu.vn)' })
   @IsEmail({}, { message: 'Định dạng email không hợp lệ' })
-  @Matches(/\.edu\.vn$/, { message: 'Bắt buộc phải sử dụng email trường (.edu.vn)' })
+  @Matches(/@uit\.edu\.vn$/, { message: 'Giai đoạn thử nghiệm chỉ hỗ trợ sinh viên UIT với email @uit.edu.vn' })
   @IsNotEmpty({ message: 'Email không được để trống' })
   email: string;
 

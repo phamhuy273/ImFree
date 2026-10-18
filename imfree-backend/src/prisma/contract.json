@@ -4,8 +4,12 @@
   "target": "postgres",
   "profileHash": "3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2",
   "roots": {
-    "post": {
-      "model": "Post",
+    "category": {
+      "model": "Category",
+      "namespace": "public"
+    },
+    "listing": {
+      "model": "Listing",
       "namespace": "public"
     },
     "user": {
@@ -17,19 +21,106 @@
     "namespaces": {
       "public": {
         "models": {
-          "Post": {
+          "Category": {
             "fields": {
-              "authorId": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "icon_url": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/int4@1",
                   "kind": "scalar"
                 }
               },
-              "content": {
-                "nullable": true,
+              "name": {
+                "nullable": false,
                 "type": {
                   "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "slug": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "listings": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "categoryId"
+                  ]
+                },
+                "to": {
+                  "model": "Listing",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "createdAt"
+                },
+                "icon_url": {
+                  "column": "icon_url"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "slug": {
+                  "column": "slug"
+                },
+                "updatedAt": {
+                  "column": "updatedAt"
+                }
+              },
+              "namespaceId": "public",
+              "table": "category"
+            }
+          },
+          "Listing": {
+            "fields": {
+              "campus_zone": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "categoryId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
                   "kind": "scalar"
                 }
               },
@@ -40,10 +131,60 @@
                   "kind": "scalar"
                 }
               },
+              "deposit_amount": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "id": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "images": {
+                "many": true,
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "location_note": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "price_per_day": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "providerId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
                   "kind": "scalar"
                 }
               },
@@ -63,11 +204,26 @@
               }
             },
             "relations": {
-              "author": {
+              "category": {
                 "cardinality": "N:1",
                 "on": {
                   "localFields": [
-                    "authorId"
+                    "categoryId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Category",
+                  "namespace": "public"
+                }
+              },
+              "provider": {
+                "cardinality": "N:1",
+                "on": {
+                  "localFields": [
+                    "providerId"
                   ],
                   "targetFields": [
                     "id"
@@ -81,17 +237,38 @@
             },
             "storage": {
               "fields": {
-                "authorId": {
-                  "column": "authorId"
+                "campus_zone": {
+                  "column": "campus_zone"
                 },
-                "content": {
-                  "column": "content"
+                "categoryId": {
+                  "column": "categoryId"
                 },
                 "createdAt": {
                   "column": "createdAt"
                 },
+                "deposit_amount": {
+                  "column": "deposit_amount"
+                },
+                "description": {
+                  "column": "description"
+                },
                 "id": {
                   "column": "id"
+                },
+                "images": {
+                  "column": "images"
+                },
+                "location_note": {
+                  "column": "location_note"
+                },
+                "price_per_day": {
+                  "column": "price_per_day"
+                },
+                "providerId": {
+                  "column": "providerId"
+                },
+                "status": {
+                  "column": "status"
                 },
                 "title": {
                   "column": "title"
@@ -101,7 +278,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "post"
+              "table": "listing"
             }
           },
           "User": {
@@ -170,7 +347,23 @@
                 }
               }
             },
-            "relations": {},
+            "relations": {
+              "listings": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "providerId"
+                  ]
+                },
+                "to": {
+                  "model": "Listing",
+                  "namespace": "public"
+                }
+              }
+            },
             "storage": {
               "fields": {
                 "avatar_url": {
@@ -214,17 +407,89 @@
       "public": {
         "entries": {
           "table": {
-            "post": {
+            "category": {
               "columns": {
-                "authorId": {
-                  "codecId": "pg/int4@1",
-                  "nativeType": "int4",
+                "createdAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
                   "nullable": false
                 },
-                "content": {
+                "icon_url": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "slug": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "updatedAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "name"
+                  ]
+                },
+                {
+                  "columns": [
+                    "slug"
+                  ]
+                }
+              ]
+            },
+            "listing": {
+              "checks": [
+                {
+                  "expression": "array_position(\"images\", NULL) IS NULL",
+                  "name": "listing_images_elem_not_null_2f12556f",
+                  "prefix": "listing_images_elem_not_null"
+                }
+              ],
+              "columns": {
+                "campus_zone": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "UIT_CAMPUS"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "categoryId": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
                 },
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
@@ -235,6 +500,20 @@
                   "nativeType": "timestamptz",
                   "nullable": false
                 },
+                "deposit_amount": {
+                  "codecId": "pg/float8@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "float8",
+                  "nullable": false
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
                 "id": {
                   "codecId": "pg/int4@1",
                   "default": {
@@ -242,6 +521,40 @@
                     "kind": "function"
                   },
                   "nativeType": "int4",
+                  "nullable": false
+                },
+                "images": {
+                  "codecId": "pg/text@1",
+                  "many": true,
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "location_note": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "price_per_day": {
+                  "codecId": "pg/float8@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "float8",
+                  "nullable": false
+                },
+                "providerId": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "AVAILABLE"
+                  },
+                  "nativeType": "text",
                   "nullable": false
                 },
                 "title": {
@@ -259,10 +572,10 @@
                 {
                   "source": {
                     "columns": [
-                      "authorId"
+                      "providerId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "post"
+                    "tableName": "listing"
                   },
                   "target": {
                     "columns": [
@@ -271,15 +584,39 @@
                     "namespaceId": "public",
                     "tableName": "user"
                   }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "categoryId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "listing"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "category"
+                  }
                 }
               ],
               "indexes": [
                 {
                   "columns": [
-                    "authorId"
+                    "categoryId"
                   ],
-                  "name": "post_authorId_idx_e47547ed",
-                  "prefix": "post_authorId_idx",
+                  "name": "listing_categoryId_idx_15c304f2",
+                  "prefix": "listing_categoryId_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "providerId"
+                  ],
+                  "name": "listing_providerId_idx_d1904c54",
+                  "prefix": "listing_providerId_idx",
                   "unique": false
                 }
               ],
@@ -371,10 +708,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "95236383e6233b6439f317fa849b5345fe852418c41209e5dfba639b16540ccd"
+    "storageHash": "3fedad59bac5ffc727798a9be4f2fa1f4fe94f001e7596862bd7a791f7726b69"
   },
   "execution": {
-    "executionHash": "4abff323cc88151ef9c9a0ec90122cfee6d46814a118cdb66a9fdd94a4123463",
+    "executionHash": "704279a7211d0784c1a6b9fb949a876fa60cb594265f13ca01ebc52b1689a2b2",
     "mutations": {
       "defaults": [
         {
@@ -389,7 +726,22 @@
           "ref": {
             "column": "updatedAt",
             "namespace": "public",
-            "table": "post"
+            "table": "category"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "onUpdate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "updatedAt",
+            "namespace": "public",
+            "table": "listing"
           }
         },
         {
